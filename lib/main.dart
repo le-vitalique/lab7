@@ -117,7 +117,7 @@ class MyHomePage extends ConsumerWidget {
             SizedBox(
               width: 250,
               child: TextField(
-                controller: firstNameController,
+                //controller: firstNameController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                 ),
@@ -134,7 +134,7 @@ class MyHomePage extends ConsumerWidget {
             SizedBox(
               width: 250,
               child: TextField(
-                controller: lastNameController,
+                //controller: lastNameController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                 ),
