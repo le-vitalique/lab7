@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lab7/user.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends ConsumerWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+  const MyHomePage({super.key, required this.title});
 
   final String title;
 
@@ -49,8 +49,6 @@ class MyHomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(stateNotifierProvider);
     final provider = ref.watch(stateNotifierProvider.notifier);
-    final firstNameController = TextEditingController();
-    final lastNameController = TextEditingController();
 
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
@@ -87,70 +85,55 @@ class MyHomePage extends ConsumerWidget {
           // action in the IDE, or press "p" in the console), to see the
           // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
+          children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Имя ',
-                  style: Theme.of(context).textTheme.headlineMedium,
+              children: [
+                const Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [Text('Имя'), Text('Фамилия')],
                 ),
-                Text(
-                  user.firstName.toString(),
-                  style: Theme.of(context).textTheme.headlineMedium,
+                const SizedBox(width: 10),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(user.firstName.toString().isNotEmpty
+                        ? user.firstName.toString()
+                        : 'Нет данных'),
+                    Text(user.lastName.toString().isNotEmpty
+                        ? user.lastName.toString()
+                        : 'Нет данных'),
+                  ],
                 ),
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Фамилия ',
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
-                Text(
-                  user.lastName.toString(),
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
-              ],
-            ),
+            const SizedBox(height: 10),
             SizedBox(
-              width: 250,
+              width: 200,
               child: TextField(
-                //controller: firstNameController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                 ),
-                onChanged: (String newText) {
-                  if (newText.isNotEmpty) {
-                    provider.editFirstName(newText);
-                  } else {
-                     provider.editFirstName('Нет данных');
-                  }
+                onChanged: (newText) {
+                  provider.editFirstName(newText);
                 },
               ),
             ),
-            const SizedBox(height: 10,),
+            const SizedBox(height: 10),
             SizedBox(
-              width: 250,
+              width: 200,
               child: TextField(
-                //controller: lastNameController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                 ),
-                onChanged: (String newText) {
-                  if (newText.isNotEmpty) {
-                    provider.editLastName(newText);
-                  } else {
-                    provider.editLastName('Нет данных');
-                  }
+                onChanged: (newText) {
+                  provider.editLastName(newText);
                 },
               ),
             ),
           ],
         ),
       ),
-      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
